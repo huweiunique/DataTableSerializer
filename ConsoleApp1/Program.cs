@@ -76,6 +76,9 @@ namespace ConsoleApp1
             {
                 using (MemoryStream stream = new MemoryStream())
                 {
+                    //删除约束
+                    dataTable.Constraints.Clear();
+
                     dataTable.WriteXmlSchema(stream);
 
                     innerTable.Schema = Encoding.UTF8.GetString(stream.ToArray());
