@@ -78,7 +78,7 @@ namespace ConsoleApp1
                 {
                     dataTable.WriteXmlSchema(stream);
 
-                    innerTable.Schema = Encoding.UTF8.GetString(stream.GetBuffer());
+                    innerTable.Schema = Encoding.UTF8.GetString(stream.ToArray());
                 }
             }
             innerTable.Data = dataTable;
