@@ -66,13 +66,24 @@ namespace ConsoleApp1
                         schemaTable.ReadXmlSchema(reader);
                     }
                 }
+                //合并数据
+                if(Data != null && Data.Rows.Count > 0)
+                {
+                    schemaTable.Merge(Data);
+                }
                 return schemaTable;
             }
         }
-        public static string Serialize(DataTable dataTable)
+        /// <summary>
+        /// 序列化dataTable
+        /// </summary>
+        /// <param name="dataTable">要序列化的dataTable</param>
+        /// <param name="includeSchemaAlways">是否总是带上schema,默认情况下有数据时，是不会带上schema的，但是当一行数据都没有时，会带上</param>
+        /// <returns></returns>
+        public static string Serialize(DataTable dataTable,bool includeSchemaAlways=false)
         {
             InnerTable innerTable = new InnerTable();
-            if (dataTable.Rows.Count == 0)
+            if (includeSchemaAlways || dataTable.Rows.Count == 0)
             {
                 using (MemoryStream stream = new MemoryStream())
                 {
@@ -87,11 +98,15 @@ namespace ConsoleApp1
             innerTable.Data = dataTable;
             return JsonConvert.SerializeObject(innerTable);
         }
+        /// <summary>
+        /// 反序列化到DataTable
+        /// </summary>
+        /// <param name="json">dataTable的序列化结果</param>
+        /// <returns>DataTable</returns>
         public static DataTable Deserialize(string json)
         {
             InnerTable innerTable = JsonConvert.DeserializeObject<InnerTable>(json);
             return innerTable.GetData();
-
         }
     }
 }
