@@ -25,16 +25,16 @@ namespace ConsoleApp1
             dataTable.Columns.Add("Name", typeof(string));
 
             DataRow row1 = dataTable.NewRow();
-            row1["ID"] = 1;
-            row1["Name"] = "John Doe";
-            row1["gData"] = new byte[] { 10, 20, 30 };
+            row1["ID"] = DBNull.Value;
+            row1["Name"] = DBNull.Value;
+            row1["gData"] = DBNull.Value;
             dataTable.Rows.Add(row1);
 
 
             DataRow row2 = dataTable.NewRow();
-            row1["ID"] = 2;
-            row1["Name"] = "huwei";
-            row1["gData"] = new byte[] { 30, 20, 30 };
+            row1["ID"] = DBNull.Value;
+            row1["Name"] = DBNull.Value;
+            row1["gData"] = DBNull.Value;
             dataTable.Rows.Add(row2);
 
 
@@ -77,7 +77,7 @@ namespace ConsoleApp1
     {
         static DataTableSerializer()
         {
-            settings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Objects };
+            settings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All };
             settings.Converters.Insert(0, new ConsoleApp1.DataTableConverter());
         }
         public static JsonSerializerSettings settings;
@@ -101,7 +101,7 @@ namespace ConsoleApp1
                 //合并数据
                 if (Data != null && Data.Rows.Count > 0)
                 {
-                    schemaTable.Merge(Data);
+                    schemaTable.Merge(Data,false,MissingSchemaAction.Ignore);
                 }
                 return schemaTable;
             }
@@ -112,7 +112,7 @@ namespace ConsoleApp1
         /// <param name="dataTable">要序列化的dataTable</param>
         /// <param name="includeSchemaAlways">是否总是带上schema,默认情况下有数据时，是不会带上schema的，但是当一行数据都没有时，会带上</param>
         /// <returns></returns>
-        public static string Serialize(DataTable dataTable, bool includeSchemaAlways = false)
+        public static string Serialize(DataTable dataTable, bool includeSchemaAlways = true)
         {
             InnerTable innerTable = new InnerTable();
             if (includeSchemaAlways || dataTable.Rows.Count == 0)
