@@ -30,7 +30,15 @@ namespace HuanSi.Lib.Serializer
                 //合并数据
                 if (Data != null && Data.Rows.Count > 0)
                 {
-                    schemaTable.Merge(Data,false,MissingSchemaAction.Ignore);
+                    try
+                    {
+                        schemaTable.BeginLoadData();
+                        schemaTable.Merge(Data, false, MissingSchemaAction.Ignore);
+                    }
+                    finally
+                    {
+                        schemaTable.EndLoadData();
+                    }
                 }
                 return schemaTable;
             }
