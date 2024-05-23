@@ -25,21 +25,19 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using Newtonsoft.Json.Utilities;
 using System;
 using System.Data;
 using Newtonsoft.Json.Serialization;
-using ConsoleApp1;
 using Newtonsoft.Json;
 
-namespace ConsoleApp1
+namespace HuanSi.Lib.Serializer
 {
     /// <summary>
     /// Converts a <see cref="DataTable"/> to and from JSON.
     /// </summary>
     public class DataTableConverter : JsonConverter
     {
+        public static readonly DataTableConverter Instance = new DataTableConverter();
         /// <summary>
         /// Writes the JSON representation of the object.
         /// </summary>
